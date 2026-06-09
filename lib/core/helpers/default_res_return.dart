@@ -15,6 +15,8 @@ class DefaultResReturn {
           : res?.statusCode ?? 100,
       data: data,
       successful: false,
+      timestamp:DateTime.now().toString(),
+      errorCode: body.erroCode
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:mobile/core/application/state/app_auth_state.dart';
 import 'package:mobile/core/data/model/model.dart';
 import 'package:mobile/core/domain/repo/repo.dart';
 import 'package:mobile/features/auth/data/model/model.dart';
+import '../../helpers/logger.dart';
 import 'repo_impl_provider.dart';
 
 class AppAuthStateProvider extends AsyncNotifier<AppAuthState> {
@@ -34,40 +35,40 @@ class AppAuthStateProvider extends AsyncNotifier<AppAuthState> {
     state = AsyncData(await _refreshUserState());
   }
 
-  UserVirtualAccount? get currentUserVirtualAccount => state.value?.whenOrNull(
-    isUserAuthenticated: (user) => user?.virtualAccoutInfo,
-  );
+  // UserVirtualAccount? get currentUserVirtualAccount => state.value?.whenOrNull(
+  //   isUserAuthenticated: (user) => user?.virtualAccoutInfo,
+  // );
 
   UserBasicInFormation? get currentUser => state.value?.whenOrNull(
-    isUserAuthenticated: (user) => user?.userBasicInfo,
+    isUserAuthenticated: (user) => user?.baseInfo,
   );
 
-  void setKycState(String? val) {
-    var current = state.value;
-    if (current == null) {
-      return;
-    }
-
-    state = AsyncData(
-      state.when(
-        data: (dt) => dt.when(
-          initial: () => current,
-          loading: () => current,
-          error: (e) => current,
-          hasOnboardedBefore: () => current,
-          hasNotOnboardedBefore: () => current,
-          isUserNotAuthenticated: () => current,
-          isUserAuthenticated: (data) {
-            var updatedUser = data?.userBasicInfo.copyWith(kycStatus: val);
-            var user = data?.copyWith(userBasicInfo: updatedUser!);
-            return AppAuthState.isUserAuthenticated(user);
-          },
-        ),
-        error: (e, st) => current,
-        loading: () => current,
-      ),
-    );
-  }
+  // void setKycState(String? val) {
+  //   var current = state.value;
+  //   if (current == null) {
+  //     return;
+  //   }
+  //
+  //   state = AsyncData(
+  //     state.when(
+  //       data: (dt) => dt.when(
+  //         initial: () => current,
+  //         loading: () => current,
+  //         error: (e) => current,
+  //         hasOnboardedBefore: () => current,
+  //         hasNotOnboardedBefore: () => current,
+  //         isUserNotAuthenticated: () => current,
+  //         isUserAuthenticated: (data) {
+  //           var updatedUser = data?.baseInfo.copyWith(kycVerificationStatus: val);
+  //           var user = data?.copyWith(baseInfo: updatedUser!);
+  //           return AppAuthState.isUserAuthenticated(user);
+  //         },
+  //       ),
+  //       error: (e, st) => current,
+  //       loading: () => current,
+  //     ),
+  //   );
+  // }
 
   AppAuthRepo get auth => ref.read(appAuthStateRepo);
 
@@ -86,16 +87,20 @@ class AppAuthStateProvider extends AsyncNotifier<AppAuthState> {
     state = AsyncLoading();
     try {
       auth.setAccessToken(tokenModel.token);
+      logger.e(tokenModel.opaqueToken);
       if (tokenModel.opaqueToken != null) {
         auth.setOpaqueToken(tokenModel.opaqueToken!);
       }
 
       var user = await auth.getCurrentUser();
+      logger.e(user.data?.baseInfo);
       if (user.data == null) {
         state = AsyncData(AppAuthState.isUserNotAuthenticated());
       } else {
         state = AsyncData(AppAuthState.isUserAuthenticated(user.data));
       }
+
+      logger.e(state);
     } catch (e, st) {
       state = AsyncError(e, st);
     }

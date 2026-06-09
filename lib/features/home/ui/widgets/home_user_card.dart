@@ -76,7 +76,7 @@ class _UserHomeCardState extends ConsumerState<UserHomeCard> {
                 ),
               ),
               Text(
-                capitalize(widget.user.userBasicInfo.firstName),
+                capitalize(widget.user.baseInfo.firstName),
                 overflow: TextOverflow.ellipsis,
               ),
             ],

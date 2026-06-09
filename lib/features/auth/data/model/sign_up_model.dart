@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'sign_up_model.g.dart';
 
 
-@JsonSerializable(genericArgumentFactories: true)
+@JsonSerializable()
 class SignUpModel {
   SignUpModel({
     required this.email,

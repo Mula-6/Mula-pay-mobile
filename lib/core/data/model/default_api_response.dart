@@ -7,7 +7,7 @@ class DefaultApiResponse<T> {
     required this.message,
     required this.statusCode,
     required this.data,
-    required this.successful,
+    required this.successful, this.errorCode, required this.timestamp,
   });
 
   @JsonKey(name: "message")
@@ -21,6 +21,11 @@ class DefaultApiResponse<T> {
 
   @JsonKey(name: "data")
   final T data;
+
+  @JsonKey(name: "error_code")
+  final String? errorCode;
+
+  final String timestamp;
 
   
   factory DefaultApiResponse.fromJson(

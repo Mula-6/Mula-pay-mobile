@@ -39,7 +39,7 @@ class _KycStatusScreenState extends ConsumerState<KycStatusScreen> {
 
   KycStatusEnum? _getUserKycState() {
     var kycState = UserStatsChecker.kycStatusFromString(
-      ref.read(appAuthStateProvider.notifier).currentUser?.kycStatus,
+      ref.read(appAuthStateProvider.notifier).currentUser?.kycVerificationStatus,
     );
     return kycState;
   }

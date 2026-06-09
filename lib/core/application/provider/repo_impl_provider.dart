@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/core/application/provider/provider.dart';
 import 'package:mobile/core/data/api/api.dart';

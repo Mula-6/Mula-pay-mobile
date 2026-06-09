@@ -24,11 +24,11 @@ class HomeBalanceSection extends ConsumerWidget {
     );
 
     var kycStatus = UserStatsChecker.kycStatusFromString(
-      currentUser?.kycStatus,
+      currentUser?.kycVerificationStatus,
     );
-    var virtualAccoutInfo = ref
-        .read(appAuthStateProvider.notifier)
-        .currentUserVirtualAccount;
+    // var virtualAccoutInfo = ref
+    //     .read(appAuthStateProvider.notifier)
+    //     .currentUserVirtualAccount;
     var userWallet = ref
         .watch(userWalletProvider)
         .whenOrNull(data: (dt) => dt.whenOrNull(walletInfo: (info) => info));
@@ -151,11 +151,12 @@ class HomeBalanceSection extends ConsumerWidget {
                       ),
 
                       // Account number section
-                      if (virtualAccoutInfo != null)
+                      // if (virtualAccoutInfo != null)
                         GestureDetector(
                           onTap: () {
                             NumberFormatter.copyToClipboard(
-                              virtualAccoutInfo.accountNumber,
+                              "account number"
+                              // virtualAccoutInfo.accountNumber,
                             );
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -192,7 +193,8 @@ class HomeBalanceSection extends ConsumerWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  virtualAccoutInfo.accountNumber,
+                                  "account number",
+                                  // virtualAccoutInfo.accountNumber,
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     color: colorScheme.onSurface
                                         .withAlphaOpacity(0.6),

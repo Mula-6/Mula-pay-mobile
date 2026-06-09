@@ -72,4 +72,13 @@ class AuthApi {
       return DefaultResReturn.exception<Null>(e, data: null);
     }
   }
+
+  Future<DefaultApiResponse<Null>> logoutUser({required OpaqueOkenModel model}) async {
+    try {
+      var res = await dio.delete("/auth/logout", data: model.toJson());
+      return DefaultApiResponse.fromJson(res.data, (data) => null);
+    } on DioException catch (e) {
+      return DefaultResReturn.exception<Null>(e, data: null);
+    }
+  }
 }

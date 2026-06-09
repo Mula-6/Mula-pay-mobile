@@ -10,7 +10,7 @@ class UserStatsChecker {
   static void init(WidgetRef ref, BuildContext context) async {
     await UserStatsChecker._checkCameraPermission();
     // ignore: use_build_context_synchronously
-    UserStatsChecker._checkKycStats(ref, context);
+    // UserStatsChecker._checkKycStats(ref, context);
   }
 
   static KycStatusEnum? kycStatusFromString(String? status) {
@@ -28,7 +28,7 @@ class UserStatsChecker {
 
   static void _checkKycStats(WidgetRef ref, BuildContext context) {
     var kycStatus = UserStatsChecker.kycStatusFromString(
-      ref.read(appAuthStateProvider.notifier).currentUser?.kycStatus,
+      ref.read(appAuthStateProvider.notifier).currentUser?.kycVerificationStatus,
     );
     if (kycStatus != null) {
       ref.read(userWalletProvider);
